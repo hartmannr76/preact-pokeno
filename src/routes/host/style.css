@@ -1,0 +1,26 @@
+.profile {
+	padding: 56px 20px;
+	min-height: 100%;
+	width: 100%;
+}
+
+.row {
+	display: flex;
+}
+
+.card {
+	height: 18vh;
+	flex: 1;
+	margin: 10px 0;
+}
+
+.aligner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.alignedItem {
+	flex: none;
+	font-size: 3em;
+}
