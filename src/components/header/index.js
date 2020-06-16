@@ -6,7 +6,7 @@ const Header = () => (
 	<header class={style.header}>
 		<h1>Pokeno</h1>
 		<nav>
-			<Link activeClassName={style.active} href="/pokeno/host">Host</Link>
+			<Link activeClassName={style.active} href="/preact-pokeno">Host</Link>
 		</nav>
 	</header>
 );

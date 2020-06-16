@@ -22,7 +22,7 @@ export default class App extends Component {
 			<div id="app">
 				<Header />
 				<Router onChange={this.handleRoute}>
-					<Host path="/pokeno/host/" />
+					<Host path="/preact-pokeno/" />
 				</Router>
 			</div>
 		);

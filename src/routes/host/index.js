@@ -77,7 +77,7 @@ export default class Host extends Component {
 			} else if (number == 14) {
 				number = 'ace'
 			}
-			const path = `/assets/svg-cards/${number}_of_${suit}.svg`;
+			const path = `/preact-pokeno/assets/svg-cards/${number}_of_${suit}.svg`;
 			return (<img class={style.card} src={path} />);
 			
 		}
