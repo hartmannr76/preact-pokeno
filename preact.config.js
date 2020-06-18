@@ -1,10 +1,12 @@
 export default (config, env, helpers) => {
     config.output.publicPath = '/preact-pokeno/';
     
-    config.devServer.publicPath = '/preact-pokeno/';
-    config.devServer.contentBasePublicPath = '/preact-pokeno/';
-    config.devServer.openPage = 'preact-pokeno/';
-    config.devServer.open = true;
+    if (config.devServer) {
+        config.devServer.publicPath = '/preact-pokeno/';
+        config.devServer.contentBasePublicPath = '/preact-pokeno/';
+        config.devServer.openPage = 'preact-pokeno/';
+        config.devServer.open = true;   
+    }
 
     // use the public path in your app as 'process.env.PUBLIC_PATH'
     config.plugins.push(
