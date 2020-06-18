@@ -86,6 +86,11 @@ html, body {
 	margin: 10px 0;
 }
 
+.largeCard__24yFK {
+	-ms-flex: 1;
+	    flex: 1;
+}
+
 .aligner__2pRFQ {
 	display: -ms-flexbox;
 	display: flex;
@@ -102,4 +107,4 @@ html, body {
 }
 
 
-/*# sourceMappingURL=ssr-bundle.3282e.css.map*/
+/*# sourceMappingURL=ssr-bundle.0698e.css.map*/
