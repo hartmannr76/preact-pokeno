@@ -14,6 +14,10 @@
 	margin: 10px 0;
 }
 
+.largeCard {
+	flex: 1;
+}
+
 .aligner {
 	display: flex;
 	align-items: center;

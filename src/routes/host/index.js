@@ -20,17 +20,83 @@ function shuffle(array) {
 	return array;
 }
 
+function Card({ data, suit, ...props }) {
+	// modulo 13 places the number in range of a suit
+	// adding 2 gives us an easy way to place the index into the face cards
+	let number = (data.place%13)+2;
+
+	if (number == 11) {
+		number = 'jack';
+	} else if (number == 12) {
+		number = 'queen';
+	} else if (number == 13) {
+		number = 'king'
+	} else if (number == 14) {
+		number = 'ace'
+	}
+	const path = `/preact-pokeno/assets/svg-cards/${number}_of_${suit}.svg`;
+	return (<img src={path} {...props} />);
+}
+
+export function LargeCard ({ card }) {
+
+	let suit;
+
+	if (card.place >= 0 && card.place < 13) {
+		suit = Suit.HEARTS;
+	} else if (card.place >= 13 && card.place < 26) {
+		suit = Suit.SPADES;
+	} else if (card.place >= 26 && card.place < 39) {
+		suit = Suit.DIAMONDS;
+	} else {
+		suit = Suit.CLUBS;
+	}
+
+	return (
+		<div class={style.row}>
+			<Card data={card} suit={suit} class={style.largeCard} />
+		</div>
+	);
+}
+
+const ViewState = {
+	ALL_CARDS: 0,
+	LARGE_CARD: 1,
+};
+
+const Suit = {
+	HEARTS: 'hearts',
+	SPADES: 'spades',
+	DIAMONDS: 'diamonds',
+	CLUBS: 'clubs',
+}
+
 export default class Host extends Component {
 	state = {
 		time: Date.now(),
 		count: -1,
 		deck: shuffle(Array(52).fill(false).map((e, i) => ({value: e, place: i}))),
 		board: Array(52).fill(),
+		viewState: ViewState.ALL_CARDS,
+		tick: 0,
 	};
 
 	// update the current time
 	updateTime = () => {
-		this.setState({ time: Date.now() });
+		let {
+			tick: newTick,
+			viewState: newViewState
+		} = this.state;
+
+		if (newTick > 0) {
+			newTick--;
+		}
+
+		if (newTick === 0) {
+			newViewState = ViewState.ALL_CARDS
+		}
+
+		this.setState({ time: Date.now(), tick: newTick, viewState: newViewState });
 	};
 
 	increment = () => {
@@ -50,6 +116,8 @@ export default class Host extends Component {
 			count: this.state.count + 1,
 			deck,
 			board,
+			tick: 5,
+			viewState: ViewState.LARGE_CARD
 		 });
 	};
 
@@ -66,20 +134,7 @@ export default class Host extends Component {
 
 	cards = (slice, suit) => slice.map((e, i) => {
 		if (e) {
-			let number = (e.place%13)+2;
-
-			if (number == 11) {
-				number = 'jack';
-			} else if (number == 12) {
-				number = 'queen';
-			} else if (number == 13) {
-				number = 'king'
-			} else if (number == 14) {
-				number = 'ace'
-			}
-			const path = `/preact-pokeno/assets/svg-cards/${number}_of_${suit}.svg`;
-			return (<img class={style.card} src={path} />);
-			
+			return (<Card data={e} suit={suit} class={style.card} />);
 		}
 
 		return (
@@ -89,10 +144,10 @@ export default class Host extends Component {
 	});
 
 	renderRow() {
-		const hearts = this.cards(this.state.board.slice(0, 13), 'hearts');
-		const spades = this.cards(this.state.board.slice(13, 26), 'spades');
-		const diamonds = this.cards(this.state.board.slice(26, 39), 'diamonds');
-		const clubs = this.cards(this.state.board.slice(39, 52), 'clubs');
+		const hearts = this.cards(this.state.board.slice(0, 13), Suit.HEARTS);
+		const spades = this.cards(this.state.board.slice(13, 26), Suit.SPADES);
+		const diamonds = this.cards(this.state.board.slice(26, 39), Suit.DIAMONDS);
+		const clubs = this.cards(this.state.board.slice(39, 52), Suit.CLUBS);
 
 		return <div>
 			<div class={style.row}>{hearts}</div>
@@ -102,7 +157,7 @@ export default class Host extends Component {
 		</div>;
 	}
 
-	render(_, { count }) {
+	render(_, { count, deck, viewState }) {
 		return (
 			<div class={style.profile}>
 				<p>
@@ -110,7 +165,7 @@ export default class Host extends Component {
 					{' '}
 					Cards drawn: {count+1}.
 				</p>
-				{this.renderRow()}
+				{viewState === ViewState.LARGE_CARD ? <LargeCard card={deck[count]} /> : this.renderRow()}
 			</div>
 		);
 	}
